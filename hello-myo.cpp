@@ -8,7 +8,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
-
+#include <ApplicationServices/ApplicationServices.h>
 
 // The only file that needs to be included to use the Myo C++ SDK is myo.hpp.
 #include <myo/myo.hpp>
@@ -18,8 +18,10 @@
 // default behavior is to do nothing.
 class DataCollector : public myo::DeviceListener {
 public:
+    CGEventSourceRef source;
+
     std::string acceldata;
-    const double straightPunchX = -2.60;
+    const double straightPunchX = -2.00;
     bool punching = false;
     bool punching2 = false;
     std::vector<myo::Myo*> knownMyos;
@@ -32,16 +34,7 @@ public:
 
     void onPair(myo::Myo* myo, uint64_t timestamp, myo::FirmwareVersion firmwareVersion)
     {
-        // Print out the MAC address of the armband we paired with.
-        
-        // The pointer address we get for a Myo is unique - in other words, it's safe to compare two Myo pointers to
-        // see if they're referring to the same Myo.
-        
-        // Add the Myo pointer to our list of known Myo devices. This list is used to implement identifyMyo() below so
-        // that we can give each Myo a nice short identifier.
         knownMyos.push_back(myo);
-        
-        // Now that we've added it to our list, get our short ID for it and print it out.
         std::cout << "Paired with " << identifyMyo(myo) << "." << std::endl;
     }
     
@@ -95,8 +88,31 @@ public:
         strs << accel.z();
         str = strs.str();
         acceldata += str;
-        if(punching || punching2)
-            std::cout<<acceldata<<std::endl;
+        if(identifyMyo(myo)==0) std::cout<<"0: " << acceldata<<std::endl;
+        if(identifyMyo(myo)==1) std::cout<<"1: " << acceldata<<std::endl;
+        if(punching){
+            //here we virtually press keystrokes
+            source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+            CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)1, true);
+            //CGEventSetFlags(punchPress,kCGEventFlagMaskCommand);
+            CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)1, false);
+            CGEventPost(kCGAnnotatedSessionEventTap, punchPress);
+            CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
+            CFRelease(punchPress);
+            CFRelease(punchRelease);
+            CFRelease(source);
+        }if(punching2){
+            //here we virtually press keystrokes
+            source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+            CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)2, true);
+            //CGEventSetFlags(punchPress,kCGEventFlagMaskCommand);
+            CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)2, false);
+            CGEventPost(kCGAnnotatedSessionEventTap, punchPress);
+            CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
+            CFRelease(punchPress);
+            CFRelease(punchRelease);
+            CFRelease(source);
+        }
     }
     // onOrientationData() is called whenever the Myo device provides its current orientation, which is represented as a unit quaternion.
     void onOrientationData(myo::Myo* myo, uint64_t timestamp, const myo::Quaternion<float>& quat)
@@ -199,6 +215,7 @@ public:
     myo::Pose currentPose;
 };
 
+
 int main(int argc, char** argv)
 {
     try {
@@ -221,9 +238,10 @@ int main(int argc, char** argv)
         while (1) { // main loop
             // In each iteration of our main loop, we run the Myo event loop for a set number of milliseconds.
             // Display update frequency
-            hub.run(1000/20);
+            hub.run(800/20);
             // After processing events, call print() to print.
             collector.print();
+            
         }
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;

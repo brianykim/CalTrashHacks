@@ -10,6 +10,7 @@
 		4D04ADE519266DE6006E1C84 /* hello-myo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D04ADE419266DE6006E1C84 /* hello-myo.cpp */; };
 		4D04ADE719266DF9006E1C84 /* myo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D04ADE619266DF9006E1C84 /* myo.framework */; };
 		4D63875C192670E5005BE0A6 /* myo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4D04ADE619266DF9006E1C84 /* myo.framework */; };
+		794B26A619E07EF80098F217 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 794B26A519E07EF80098F217 /* ApplicationServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,7 @@
 		4D04ADE419266DE6006E1C84 /* hello-myo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "hello-myo.cpp"; sourceTree = SOURCE_ROOT; };
 		4D04ADE619266DF9006E1C84 /* myo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = myo.framework; path = ../myo.framework; sourceTree = SOURCE_ROOT; };
 		4D1F5A95192655EE002845BB /* hello-myo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "hello-myo"; sourceTree = BUILT_PRODUCTS_DIR; };
+		794B26A519E07EF80098F217 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = ../../../../../../System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +39,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D04ADE719266DF9006E1C84 /* myo.framework in Frameworks */,
+				794B26A619E07EF80098F217 /* ApplicationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +74,7 @@
 		4D1F5AA31926563B002845BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				794B26A519E07EF80098F217 /* ApplicationServices.framework */,
 				4D04ADE619266DF9006E1C84 /* myo.framework */,
 			);
 			name = Frameworks;

@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hello-myo.cpp"
-            timestampString = "434136085.954049"
+            timestampString = "434143723.291788"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
-            landmarkName = "onOrientationData(myo::Myo* myo, uint64_t timestamp, const myo::Quaternion&lt;float&gt;&amp; quat)"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "onAccelerometerData(myo::Myo* myo, uint64_t timestamp, const myo::Vector3&lt;float&gt;&amp; accel)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
