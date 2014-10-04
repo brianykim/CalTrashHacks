@@ -9,12 +9,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "hello-myo.cpp"
-            timestampString = "434136085.954049"
+            filePath = "sf1player.cpp"
+            timestampString = "434148239.303496"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
             landmarkName = "onAccelerometerData(myo::Myo* myo, uint64_t timestamp, const myo::Vector3&lt;float&gt;&amp; accel)"
             landmarkType = "7">
          </BreakpointContent>
@@ -25,12 +25,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "hello-myo.cpp"
-            timestampString = "434143723.291788"
+            filePath = "sf1player.cpp"
+            timestampString = "434148239.303496"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
             landmarkName = "onAccelerometerData(myo::Myo* myo, uint64_t timestamp, const myo::Vector3&lt;float&gt;&amp; accel)"
             landmarkType = "7">
          </BreakpointContent>

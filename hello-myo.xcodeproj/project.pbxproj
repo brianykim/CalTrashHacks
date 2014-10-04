@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D04ADE519266DE6006E1C84 /* hello-myo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D04ADE419266DE6006E1C84 /* hello-myo.cpp */; };
+		4D04ADE519266DE6006E1C84 /* sf1player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D04ADE419266DE6006E1C84 /* sf1player.cpp */; };
 		4D04ADE719266DF9006E1C84 /* myo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D04ADE619266DF9006E1C84 /* myo.framework */; };
 		4D63875C192670E5005BE0A6 /* myo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4D04ADE619266DF9006E1C84 /* myo.framework */; };
 		794B26A619E07EF80098F217 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 794B26A519E07EF80098F217 /* ApplicationServices.framework */; };
+		794B26A819E094940098F217 /* sf2player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 794B26A719E094940098F217 /* sf2player.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,10 +28,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4D04ADE419266DE6006E1C84 /* hello-myo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "hello-myo.cpp"; sourceTree = SOURCE_ROOT; };
+		4D04ADE419266DE6006E1C84 /* sf1player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sf1player.cpp; sourceTree = SOURCE_ROOT; };
 		4D04ADE619266DF9006E1C84 /* myo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = myo.framework; path = ../myo.framework; sourceTree = SOURCE_ROOT; };
 		4D1F5A95192655EE002845BB /* hello-myo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "hello-myo"; sourceTree = BUILT_PRODUCTS_DIR; };
 		794B26A519E07EF80098F217 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = ../../../../../../System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<group>"; };
+		794B26A719E094940098F217 /* sf2player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sf2player.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +51,7 @@
 		4D1F5A8C192655EE002845BB = {
 			isa = PBXGroup;
 			children = (
-				4D1F5A97192655EE002845BB /* hello-myo */,
+				4D1F5A97192655EE002845BB /* sfmyo */,
 				4D1F5AA31926563B002845BB /* Frameworks */,
 				4D1F5A96192655EE002845BB /* Products */,
 			);
@@ -63,11 +65,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4D1F5A97192655EE002845BB /* hello-myo */ = {
+		4D1F5A97192655EE002845BB /* sfmyo */ = {
 			isa = PBXGroup;
 			children = (
-				4D04ADE419266DE6006E1C84 /* hello-myo.cpp */,
+				4D04ADE419266DE6006E1C84 /* sf1player.cpp */,
+				794B26A719E094940098F217 /* sf2player.cpp */,
 			);
+			name = sfmyo;
 			path = "hello-myo";
 			sourceTree = "<group>";
 		};
@@ -132,7 +136,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D04ADE519266DE6006E1C84 /* hello-myo.cpp in Sources */,
+				794B26A819E094940098F217 /* sf2player.cpp in Sources */,
+				4D04ADE519266DE6006E1C84 /* sf1player.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
