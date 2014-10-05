@@ -13,6 +13,10 @@
 // The only file that needs to be included to use the Myo C++ SDK is myo.hpp.
 #include <myo/myo.hpp>
 
+using std::cout;
+using std::endl;
+
+const int runFreq =5;
 // Classes that inherit from myo::DeviceListener can be used to receive events from Myo devices. DeviceListener
 // provides several virtual functions for handling different kinds of events. If you do not override an event, the
 // default behavior is to do nothing.
@@ -21,10 +25,11 @@ public:
     CGEventSourceRef source;
 
     std::string acceldata;
-    const double straightPunchX = -2.00;
+    const double straightPunchStart = -2.5;
+    const double straightPunchEnd = -0.5;
     bool punching = false;
     bool kicking = false;
-    bool movleft, movright = false;
+    bool movleft, movright, movdown, movup = false;
     std::vector<myo::Myo*> knownMyos;
     DataCollector()
     : onArm(false), roll_w(0), pitch_w(0), yaw_w(0), currentPose()
@@ -62,33 +67,44 @@ public:
     
     void onAccelerometerData(myo::Myo* myo, uint64_t timestamp, const myo::Vector3<float>& accel)
     {
-        if(accel.x()>=-1.0&&punching&&identifyMyo(myo)==0) {
+        if(accel.x()>=straightPunchEnd&&punching&&identifyMyo(myo)==0) {
             punching = false;
         }
-        if(accel.x()<straightPunchX&&!punching&&identifyMyo(myo)==0) {
+        if(accel.x()<straightPunchStart&&!punching&&identifyMyo(myo)==0) {
             punching = true;
             std::cout<<"PAWWNNNNCHHHH PLAYER ONE"<<std::endl;
+            myo->vibrate(myo::Myo::vibrationShort);
         }
         if(accel.x()>=-1.0&&kicking&&identifyMyo(myo)==1) {
             kicking = false;
         }
-        if(accel.x()<straightPunchX&&!kicking&&identifyMyo(myo)==1) {
+        if(accel.x()<straightPunchStart&&!kicking&&identifyMyo(myo)==1) {
             kicking = true;
-            std::cout<<"PAWWNNNNCHHHH PLAYER TWO"<<std::endl;
+            std::cout<<"KIIIIIICK PLAYER ONE"<<std::endl;
         }
-        if(roll_w >= 7 && roll_w <= 9&&identifyMyo(myo)==0) { //[4,6], [7,9] [10,12]
+        if(roll_w >= 6 && roll_w <= 10&&identifyMyo(myo)==0) { //[4,6], [7,9] [10,12]
             movleft = false;
             movright = false;
         }
         if(roll_w <= 6&&identifyMyo(myo)==0) {
             movleft = true;
             movright = false;
-            myo->vibrate(myo::Myo::vibrationMedium);
         }
         if(roll_w >= 10&&identifyMyo(myo)==0) {
             movright = true;
             movleft = false;
-            myo->vibrate(myo::Myo::vibrationMedium);
+        }
+        if(pitch_w >= 5 && pitch_w <= 11&&identifyMyo(myo)==0) { //[~7], [8~11] [12~]
+            movdown = false;
+            movup = false;
+        }
+        if(pitch_w <= 4&&identifyMyo(myo)==0) {
+            movup = true;
+            movdown = false;
+        }
+        if(pitch_w >= 12&&identifyMyo(myo)==0) {
+            movdown = true;
+            movup = false;
         }
         
         std::ostringstream strs;
@@ -105,62 +121,99 @@ public:
         acceldata += str;
         if(identifyMyo(myo)==0) std::cout<<"0: " << acceldata<<std::endl;
         if(identifyMyo(myo)==1) std::cout<<"1: " << acceldata<<std::endl;
+        
         if(punching){
-            //here we virtually press keystrokes
             source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
-            CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)1, true);
-            //CGEventSetFlags(punchPress,kCGEventFlagMaskCommand);
-            CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)1, false);
+            CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)13, true);
             CGEventPost(kCGAnnotatedSessionEventTap, punchPress);
-            CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
             CFRelease(punchPress);
-            CFRelease(punchRelease);
-            CFRelease(source);
-        }if(kicking){
-            //here we virtually press keystrokes
-            source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
-            CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)7, true);
-            //CGEventSetFlags(punchPress,kCGEventFlagMaskCommand);
-            CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)7, false);
-            CGEventPost(kCGAnnotatedSessionEventTap, punchPress);
-            CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
-            CFRelease(punchPress);
-            CFRelease(punchRelease);
+            
             CFRelease(source);
         }
-        if(movleft) {
-            //here we virtually press keystrokes
+        if(!punching){
             source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
-            CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)123, true);
-            //CGEventSetFlags(punchPress,kCGEventFlagMaskCommand);
-            CGEventPost(kCGAnnotatedSessionEventTap, punchPress);
-            //CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
-            CFRelease(punchPress);
-            CFRelease(source);
-        }
-        if(movright) {
-            //here we virtually press keystrokes
-            source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
-            CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)124, true);
-            //CGEventSetFlags(punchPress,kCGEventFlagMaskCommand);
-            CGEventPost(kCGAnnotatedSessionEventTap, punchPress);
-            //CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
-            CFRelease(punchPress);
-            CFRelease(source);
-        }
-        if(!movright){
-            source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
-            CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)124, false);
+            CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)13, false);
             CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
             CFRelease(punchRelease);
             CFRelease(source);
         }
-        if(!movleft){
+        
+        if(kicking){
             source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
-            CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)123, false);
-            CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
-            CFRelease(punchRelease);
+            CGEventRef kickPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)2, true);
+            CGEventPost(kCGAnnotatedSessionEventTap, kickPress);
+            CFRelease(kickPress);
             CFRelease(source);
+        }
+        if(!kicking){
+            source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+            CGEventRef kickRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)2, false);
+            CGEventPost(kCGAnnotatedSessionEventTap, kickRelease);
+            CFRelease(kickRelease);
+            CFRelease(source);
+        }
+        if(!punching && !kicking){
+            if(movleft) {
+                std::cout << "welfkjwlekfjlkwejflkwejflkwjeflkweflkwjeflkjwelfkjwlfkjwelkfjweklfjlkwejfklwejf"<<std::endl;
+                //here we virtually press keystrokes
+                source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+                CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)123, true);
+                CGEventPost(kCGAnnotatedSessionEventTap, punchPress);
+                //CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
+                CFRelease(punchPress);
+                CFRelease(source);
+            }
+            if(movright) {
+                std::cout << "welfkjwlekfjlkwejflkwejflkwjeflkweflkwjeflkjwelfkjwlfkjwelkfjweklfjlkwejfklwejf"<<std::endl;
+                //here we virtually press keystrokes
+                source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+                CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)124, true);
+                CGEventPost(kCGAnnotatedSessionEventTap, punchPress);
+                //CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
+                CFRelease(punchPress);
+                CFRelease(source);
+            }
+            if(movdown) {
+                //here we virtually press keystrokes
+                source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+                CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)125, true);
+                CGEventPost(kCGAnnotatedSessionEventTap, punchPress);
+                //CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
+                CFRelease(punchPress);
+                CFRelease(source);
+            }
+            if(movup) {
+                //here we virtually press keystrokes
+                source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+                CGEventRef punchPress = CGEventCreateKeyboardEvent(source, (CGKeyCode)126, true);
+                CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)126, false);
+                CGEventPost(kCGAnnotatedSessionEventTap, punchPress);
+                CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
+                CFRelease(punchRelease);
+                CFRelease(punchPress);
+                CFRelease(source);
+            }
+            if(!movright){
+                source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+                CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)124, false);
+                CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
+                CFRelease(punchRelease);
+                CFRelease(source);
+            }
+            if(!movleft){
+                source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+                CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)123, false);
+                CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
+                CFRelease(punchRelease);
+                CFRelease(source);
+            }
+            if(!movdown){
+                source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+                CGEventRef punchRelease = CGEventCreateKeyboardEvent(source, (CGKeyCode)125, false);
+                CGEventPost(kCGAnnotatedSessionEventTap, punchRelease);
+                CFRelease(punchRelease);
+                CFRelease(source);
+            }
         }
     }
     // onOrientationData() is called whenever the Myo device provides its current orientation, which is represented as a unit quaternion.
@@ -191,9 +244,9 @@ public:
         // Vibrate the Myo whenever we've detected that the user has made a fist.
         std::cout << "Myo " << identifyMyo(myo) << " switched to pose " << pose.toString() << "." << std::endl;
         
-        if (pose == myo::Pose::fist) {
-            myo->vibrate(myo::Myo::vibrationMedium);
-        }
+        //if (pose == myo::Pose::fist) {
+        //    myo->vibrate(myo::Myo::vibrationMedium);
+        //}
     }
 
     size_t identifyMyo(myo::Myo* myo) {
@@ -245,7 +298,7 @@ public:
             // output stream (e.g. std::cout << currentPose;). In this case we want to get the pose name's length so
             // that we can fill the rest of the field with spaces below, so we obtain it as a ssssssssssssssssssssstring using toString().
             std::string poseString = currentPose.toString();
-            std:: cout << "Roll: " << roll_w << std::endl;
+            std:: cout << "Roll: " << roll_w << " Pitch: " << pitch_w << " Yaw: " << yaw_w <<std::endl;
 
             //std::cout << '[' << (whichArm == myo::armLeft ? "L" : "R") << ']'
                       //<< '[' << poseString << std::string(14 - poseString.size(), ' ') << ']';
@@ -289,7 +342,7 @@ int main(int argc, char** argv)
         while (1) { // main loop
             // In each iteration of our main loop, we run the Myo event loop for a set number of milliseconds.
             // Display update frequency
-            hub.run(800/20);
+            hub.run(runFreq);
             // After processing events, call print() to print.
             collector.print();
             
