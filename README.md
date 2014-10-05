@@ -24,4 +24,5 @@ Ideas for Improvement:
 - More myos, more fun, more interactivity between characters
 
 MADE FOR FUN BY TEAM BRB #CalTrashHacks
-![Our Hacking Space](https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/1920530_4813637434997_4644982906218211637_n.jpg?oh=6c113887a4b1a88ebe940fc1c1b2410a&oe=54CD4330&__gda__=1422543693_4e7752a5fbff0caf2f89022254462def "Hack On TrashCans #TrashHacks")
+![Our Hack](https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/1920530_4813637434997_4644982906218211637_n.jpg?oh=6c113887a4b1a88ebe940fc1c1b2410a&oe=54CD4330&__gda__=1422543693_4e7752a5fbff0caf2f89022254462def "Myos + Street Fighter")
+![Our Hacking Space](https://scontent-a.xx.fbcdn.net/hphotos-xpa1/v/t1.0-9/s480x480/10451701_4813705556700_1373465931460281243_n.jpg?oh=23e2755f18b656e2d8b8b423850c060d&oe=54BCA929 "Hack On Trash Cans #TrashHacks #HackTrash")
